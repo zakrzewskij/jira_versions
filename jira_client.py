@@ -1,6 +1,5 @@
 import requests
 import os
-import json
 from os.path import join, dirname
 from dotenv import load_dotenv
 
@@ -29,35 +28,15 @@ class JiraClient:
             print(f"Wystąpił błąd podczas autentykacji: {e}")
             return False
 
-    def get_project_versions(self, key: str) -> object:
+    def get(self, url, params=None):
         try:
-            headers = {
-                "Accept": "application/json"
-            }
-
-            params = {
-                "expand": "description, approvers",
-                "orderBy": "-releaseDate",
-                "maxResults": 100,
-
-            }
-
-            url = f'{self.base_url}/rest/api/3/project/{key}/version'
-            response = requests.get(
-                url,
-                headers=headers,
-                auth=(self.email, self.api_token),
-                params=params
-            )
-
+            headers = {"Accept": "application/json"}
+            response = requests.get(url, headers=headers, auth=(self.email, self.api_token), params=params)
             if response.status_code == 200:
-                data = response.json()
-                print(json.dumps(data, indent=4))
-                return data
+                return response.json()
             else:
-                print(f"Błąd pobierania wersji projektu: {response.status_code} - {response.text}")
+                print(f"Błąd podczas pobierania danych: {response.status_code} - {response.text}")
                 return None
-
         except Exception as e:
-            print(f"Wystąpił błąd podczas pobierania wersji projektu: {e}")
+            print(f"Wystąpił błąd podczas pobierania danych: {e}")
             return None
