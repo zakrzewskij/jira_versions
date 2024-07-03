@@ -29,7 +29,7 @@ class JiraClient:
             print(f"Wystąpił błąd podczas autentykacji: {e}")
             return False
 
-    def get_project_versions(self, key: str):
+    def get_project_versions(self, key: str) -> object:
         try:
             headers = {
                 "Accept": "application/json"
@@ -38,7 +38,8 @@ class JiraClient:
             params = {
                 "expand": "description, approvers",
                 "orderBy": "-releaseDate",
-                "maxResults": 1000
+                "maxResults": 100,
+
             }
 
             url = f'{self.base_url}/rest/api/3/project/{key}/version'
