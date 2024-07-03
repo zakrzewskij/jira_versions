@@ -17,7 +17,7 @@ def format_versions(versions):
 
 
 class VersionManager:
-    def __init__(self, jira_client):
+    def __init__(self, jira_client) -> None:
         self.jira_client = jira_client
 
     def get_project_versions(self, key: str):
